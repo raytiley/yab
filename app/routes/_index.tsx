@@ -12,11 +12,22 @@ export async function loader() {
   return { latestPosts };
 }
 
+export function meta() {
+  return [
+    { title: "raytiley.com - Home of Ray Tiley" },
+    {
+      name: "description",
+      content:
+        "Welcome to raytiley.com, the personal website of Ray Tiley. Explore my blog posts, projects, and more.",
+    },
+  ]
+}
+
 export default function Index() {
   const data = useLoaderData<typeof loader>();
   return (
     <div className="max-w-3xl mx-auto p-6 space-y-6">
-      <h2 className="text-xl font-bold text-cyan-400">Latest Episodes</h2>
+      <h1 className="text-xl font-bold text-cyan-400">Latest Episodes</h1>
 
       {/* Aspect box should match your PNG’s ratio; tweak as needed */}
       <div className="relative w-full max-w-2xl mx-auto aspect-[4/3]">
