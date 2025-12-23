@@ -78,7 +78,6 @@ import { handleImageUpload, MAX_FILE_SIZE } from "~/lib/tiptap-utils";
 // --- Styles ---
 import "~/components/tiptap-templates/simple/simple-editor.scss";
 
-import content from "~/components/tiptap-templates/simple/data/content.json";
 
 const MainToolbarContent = ({
   onHighlighterClick,
@@ -197,12 +196,16 @@ export interface SimpleEditorProps {
   onSave?: (post: Post) => void;
   onCancel?: () => void;
   className?: string;
+  initialContent?: Content;
+  initialTitle?: string;
 }
 
 export function SimpleEditor({
   onSave,
   onCancel,
   className,
+  initialContent,
+  initialTitle = "",
 }: SimpleEditorProps) {
   const isMobile = useIsBreakpoint();
   const { height } = useWindowSize();
@@ -210,7 +213,7 @@ export function SimpleEditor({
     "main"
   );
   const toolbarRef = useRef<HTMLDivElement>(null);
-  const [title, setTitle] = useState<string>("");
+  const [title, setTitle] = useState<string>(initialTitle);
 
   const editor = useEditor({
     immediatelyRender: false,
@@ -250,7 +253,7 @@ export function SimpleEditor({
         onError: (error) => console.error("Upload failed:", error),
       }),
     ],
-    content,
+    content: initialContent,
   });
 
   const rect = useCursorVisibility({

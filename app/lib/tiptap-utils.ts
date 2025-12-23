@@ -16,7 +16,7 @@ const supabase = createClient(
 const buildObjectPath = (file: File) =>
   `images/${crypto.randomUUID()}-${file.name}`
 
-export const MAX_FILE_SIZE = 10 * 1024 * 1024 // 5MB
+export const MAX_FILE_SIZE = 10 * 1024 * 1024 // 10MB
 export const YAB_IMAGE_BUCKET = 'yab-images';
 
 export const MAC_SYMBOLS: Record<string, string> = {
