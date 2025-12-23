@@ -26,8 +26,9 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   const origin = new URL(request.url).origin
 
   // Send the actual reset password email
+  // Uses PKCE flow - redirects to /auth/callback with a code parameter
   const { error } = await supabase.auth.resetPasswordForEmail(email, {
-    redirectTo: `${origin}/auth/confirm?next=/update-password`,
+    redirectTo: `${origin}/auth/callback?next=/update-password`,
   })
 
   if (error) {

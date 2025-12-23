@@ -12,6 +12,7 @@
 - [x] **Add duplicate slug handling** - Check for existing posts with same slug
 - [x] **Fix SimpleEditor default content** - Now starts empty, accepts initialContent/initialTitle props
 - [x] **Fix MAX_FILE_SIZE comment** - Fixed comment to say 10MB (matching actual value)
+- [x] **Add error display to new post form** - Show validation errors and loading state
 
 ## Not Changed (Intentionally)
 
@@ -20,5 +21,5 @@
 
 ## Future Improvements
 
-- [ ] Add test suite (currently no tests)
+- [x] Add test suite - Vitest with 26 tests for slug utility and tiptap-utils
 - [ ] Fix React hooks lint warnings (real issues in TipTap components)
