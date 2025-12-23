@@ -1,8 +1,18 @@
-import { useLoaderData } from "react-router";
+import { redirect, useLoaderData, type LoaderFunctionArgs } from "react-router";
 import TVSnow from "~/components/TvSnow";
 import prisma from "~/lib/prisma.server";
 
-export async function loader() {
+export async function loader({ request }: LoaderFunctionArgs) {
+  // Handle Supabase auth errors that redirect to root
+  const url = new URL(request.url);
+  const error = url.searchParams.get("error");
+  const errorDescription = url.searchParams.get("error_description");
+
+  if (error) {
+    const message = errorDescription || error;
+    return redirect(`/auth/error?error=${encodeURIComponent(message)}`);
+  }
+
   const latestPosts = await prisma.post.findMany({
     orderBy: { createdAt: "desc" },
     take: 5,

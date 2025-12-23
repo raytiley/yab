@@ -1,8 +1,11 @@
-import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/card'
-import { useSearchParams } from 'react-router'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card'
+import { Button } from '~/components/ui/button'
+import { Link, useSearchParams } from 'react-router'
 
 export default function Page() {
   const [searchParams] = useSearchParams()
+  const error = searchParams?.get('error') || 'An unspecified error occurred.'
+  const isExpiredLink = error.toLowerCase().includes('expired')
 
   return (
     <div className="flex min-h-svh w-full items-center justify-center p-6 md:p-10">
@@ -10,16 +13,24 @@ export default function Page() {
         <div className="flex flex-col gap-6">
           <Card>
             <CardHeader>
-              <CardTitle className="text-2xl">Sorry, something went wrong.</CardTitle>
+              <CardTitle className="text-2xl">
+                {isExpiredLink ? 'Link Expired' : 'Something went wrong'}
+              </CardTitle>
+              <CardDescription>
+                {isExpiredLink
+                  ? 'This password reset link has expired. Please request a new one.'
+                  : error}
+              </CardDescription>
             </CardHeader>
-            <CardContent>
-              {searchParams?.get('error') ? (
-                <p className="text-sm text-muted-foreground">
-                  Code error: {searchParams?.get('error')}
-                </p>
-              ) : (
-                <p className="text-sm text-muted-foreground">An unspecified error occurred.</p>
+            <CardContent className="flex flex-col gap-4">
+              {isExpiredLink && (
+                <Button asChild>
+                  <Link to="/forgot-password">Request new reset link</Link>
+                </Button>
               )}
+              <Button variant="outline" asChild>
+                <Link to="/login">Back to login</Link>
+              </Button>
             </CardContent>
           </Card>
         </div>
