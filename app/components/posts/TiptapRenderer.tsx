@@ -1,5 +1,4 @@
 import Bold from "@tiptap/extension-bold";
-
 import Document from "@tiptap/extension-document";
 import Paragraph from "@tiptap/extension-paragraph";
 import Heading from "@tiptap/extension-heading";
@@ -12,14 +11,14 @@ import Code from "@tiptap/extension-code";
 import Strike from "@tiptap/extension-strike";
 import Blockquote from "@tiptap/extension-blockquote";
 import Image from "@tiptap/extension-image";
-import { ImageUploadNode } from "../tiptap-node/image-upload-node";
 import { generateHTML } from "@tiptap/html";
 import clsx from "clsx";
 import type { JSONContent } from "@tiptap/react";
 import Superscript from "@tiptap/extension-superscript";
 import Subscript from "@tiptap/extension-subscript";
-import { BulletList, ListItem, TaskItem, TaskList } from "@tiptap/extension-list";
+import { BulletList, ListItem, OrderedList, TaskItem, TaskList } from "@tiptap/extension-list";
 import HorizontalRule from "@tiptap/extension-horizontal-rule";
+import TextAlign from "@tiptap/extension-text-align";
 
 export type TiptapRendererProps = {
   // TipTap JSON document (what you saved in the DB)
@@ -32,54 +31,41 @@ export default function TiptapRenderer({
   document,
   className,
 }: TiptapRendererProps) {
-  console.log("TiptapRenderer content:", document);
-  const content =
-    typeof document === "object" &&
-    document !== null &&
-    "content" in document
-      ? (document as { content: JSONContent[] }).content
-      : [];
-  const html = generateHTML(
-    {
-      type: "doc",
-      content: [
-        {
-          type: "paragraph",
-          content: content,
-        },
-      ],
-    },
-    [
-      Document,
-      Paragraph,
-      Heading,
-      Text,
-      Bold,
-      Italic,
-      Highlight,
-      Link,
-      CodeBlock,
-      Code,
-      Strike,
-      Blockquote,
-      Image,
-      Superscript,
-      Subscript,
-      ListItem,
-      BulletList,
-      HorizontalRule,
-      TaskItem,
-      TaskList,
-      ImageUploadNode,
-      // other extensions …
-    ]
-  );
+  // Handle the document structure - it should already be a valid TipTap doc
+  const doc = typeof document === "object" && document !== null
+    ? (document as JSONContent)
+    : { type: "doc", content: [] };
+
+  const html = generateHTML(doc, [
+    Document,
+    Paragraph,
+    Heading,
+    Text,
+    Bold,
+    Italic,
+    Highlight.configure({ multicolor: true }),
+    Link,
+    CodeBlock,
+    Code,
+    Strike,
+    Blockquote,
+    Image,
+    Superscript,
+    Subscript,
+    ListItem,
+    BulletList,
+    OrderedList,
+    HorizontalRule,
+    TaskItem,
+    TaskList,
+    TextAlign.configure({ types: ["heading", "paragraph"] }),
+  ]);
 
   return (
     <article
       className={clsx(
-        // Tailwind Typography defaults; tweak color system as you like
-        "prose prose-neutral max-w-none dark:prose-invert",
+        // Use the retro prose theme for GeoCities aesthetic
+        "prose prose-retro max-w-none",
         // Nice defaults for blog readability
         "prose-headings:scroll-mt-24 prose-pre:rounded-xl prose-pre:p-4",
         "prose-img:rounded-xl prose-img:mx-auto",

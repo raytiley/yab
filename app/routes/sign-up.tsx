@@ -50,7 +50,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
 export default function SignUp() {
   const fetcher = useFetcher<typeof action>()
-  let [searchParams] = useSearchParams()
+  const [searchParams] = useSearchParams()
 
   const success = !!searchParams.has('success')
   const error = fetcher.data?.error

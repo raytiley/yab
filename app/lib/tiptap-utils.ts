@@ -16,7 +16,7 @@ const supabase = createClient(
 const buildObjectPath = (file: File) =>
   `images/${crypto.randomUUID()}-${file.name}`
 
-export const MAX_FILE_SIZE = 10 * 1024 * 1024 // 5MB
+export const MAX_FILE_SIZE = 10 * 1024 * 1024 // 10MB
 export const YAB_IMAGE_BUCKET = 'yab-images';
 
 export const MAC_SYMBOLS: Record<string, string> = {
@@ -364,8 +364,8 @@ export function selectionWithinConvertibleTypes(
  */
 export const handleImageUpload = async (
   file: File,
-  onProgress?: (event: { progress: number }) => void,
-  abortSignal?: AbortSignal
+  _onProgress?: (event: { progress: number }) => void,
+  _abortSignal?: AbortSignal
 ): Promise<string> => {
   // Validate file
   if (!file) {
@@ -379,7 +379,7 @@ export const handleImageUpload = async (
   }
 
   const path = buildObjectPath(file)
-  const { data, error } = await supabase.storage
+  const { error } = await supabase.storage
     .from(YAB_IMAGE_BUCKET)
     .upload(path, file, { contentType: file.type, upsert: false })
 
