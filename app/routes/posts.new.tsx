@@ -1,15 +1,8 @@
 import { data, redirect, useFetcher, useNavigate, type ActionFunctionArgs, type LoaderFunctionArgs } from "react-router";
 import { SimpleEditor } from "~/components/tiptap-templates/simple/simple-editor";
 import prisma from "~/lib/prisma.server";
+import { titleToSlug } from "~/lib/slug";
 import { createClient } from "~/lib/supabase/server";
-
-function titleToSlug(title: string) {
-  return title
-    .toLowerCase()
-    .trim()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "");
-}
 
 // Protect route - only authenticated users can create posts
 export async function loader({ request }: LoaderFunctionArgs) {
@@ -87,7 +80,9 @@ export async function action({ request }: ActionFunctionArgs) {
 
 export default function NewPostRoute() {
   const navigate = useNavigate();
-  const fetcher = useFetcher();
+  const fetcher = useFetcher<{ errors?: { title?: string; content?: string; slug?: string } }>();
+  const errors = fetcher.data?.errors;
+  const isSubmitting = fetcher.state === "submitting";
 
   function handleSave(post: { title: string; content: unknown }) {
     const formData = new FormData();
@@ -95,15 +90,35 @@ export default function NewPostRoute() {
     formData.set("content", JSON.stringify(post.content));
     fetcher.submit(formData, { method: "post" });
   }
+
   return (
     <main className="min-h-screen bg-background">
       <div className="max-w-2xl mx-auto px-4 py-8">
         <header className="mb-6">
           <h1 className="text-3xl font-bold">Create New Post</h1>
           <p className="text-muted-foreground">
-            Add a title, write your content, then save when you’re ready.
+            Add a title, write your content, then save when you're ready.
           </p>
         </header>
+
+        {errors && (
+          <div className="mb-4 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-md" role="alert">
+            <h2 className="text-red-800 dark:text-red-200 font-semibold mb-2">
+              Please fix the following errors:
+            </h2>
+            <ul className="list-disc list-inside text-red-700 dark:text-red-300 space-y-1">
+              {errors.title && <li>{errors.title}</li>}
+              {errors.content && <li>{errors.content}</li>}
+              {errors.slug && <li>{errors.slug}</li>}
+            </ul>
+          </div>
+        )}
+
+        {isSubmitting && (
+          <div className="mb-4 p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-md">
+            <p className="text-blue-700 dark:text-blue-300">Saving post...</p>
+          </div>
+        )}
 
         <SimpleEditor
           onSave={handleSave}
