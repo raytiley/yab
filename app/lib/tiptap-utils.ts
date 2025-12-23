@@ -7,7 +7,8 @@ import {
   TextSelection,
 } from "@tiptap/pm/state"
 import type { Editor, NodeWithPos } from "@tiptap/react"
-import { createClient, SupabaseClient } from '@supabase/supabase-js'
+import { createClient } from '@supabase/supabase-js'
+import type { SupabaseClient } from '@supabase/supabase-js'
 
 let _supabase: SupabaseClient | null = null;
 

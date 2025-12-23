@@ -275,9 +275,10 @@ export function SimpleEditor({
         value={title}
         onChange={(e) => setTitle(e.target.value)}
         placeholder="Enter post title..."
-        className="w-full mb-4 px-4 py-2 text-2xl font-bold border border-gray-300 dark:border-gray-700 rounded-md 
-             bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-gray-100 
-             focus:outline-none focus:ring-2 focus:ring-blue-500"
+        className="w-full mb-4 px-4 py-2 text-2xl font-bold border border-[rgba(0,255,170,0.2)] rounded-md
+             bg-[#1e1e24] text-[#00ffaa] placeholder:text-[#9ca3af]
+             focus:outline-none focus:ring-2 focus:ring-[#00ffaa] focus:border-transparent
+             font-mono"
       />
 
       {/* Action buttons */}
@@ -286,10 +287,10 @@ export function SimpleEditor({
           <button
             type="button"
             onClick={onCancel}
-            className="px-4 py-2 rounded-md font-semibold 
-                 bg-gray-200 dark:bg-gray-700 
-                 text-gray-700 dark:text-gray-200 
-                 hover:bg-gray-300 dark:hover:bg-gray-600 
+            className="px-4 py-2 rounded-md font-semibold font-mono
+                 bg-[#1e1e24] border border-[rgba(0,255,170,0.3)]
+                 text-[#9ca3af]
+                 hover:bg-[#2a2a32] hover:text-[#d4d4d4]
                  transition-colors"
           >
             Cancel
@@ -300,9 +301,9 @@ export function SimpleEditor({
           <button
             type="button"
             onClick={() => onSave({ title, content: editor?.getJSON() })}
-            className="px-4 py-2 rounded-md font-semibold 
-                 bg-blue-600 text-white 
-                 hover:bg-blue-700 
+            className="px-4 py-2 rounded-md font-semibold font-mono
+                 bg-[#00ffaa] text-[#0e0e11]
+                 hover:bg-[#00cc88]
                  shadow transition-colors"
           >
             Save

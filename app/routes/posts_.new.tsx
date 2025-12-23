@@ -123,7 +123,7 @@ export default function NewPostRoute() {
         <SimpleEditor
           onSave={handleSave}
           onCancel={() => navigate(-1)}
-          className="bg-white dark:bg-gray-900 rounded-lg shadow-md p-6"
+          className="bg-[#0e0e11] rounded-lg border border-[rgba(0,255,170,0.2)] p-6"
         />
       </div>
     </main>

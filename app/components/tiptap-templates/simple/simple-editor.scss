@@ -32,6 +32,150 @@ body,
   background-color: var(--tt-bg-color);
 }
 
+/* Dark editor theme matching site aesthetic */
+.simple-editor-wrapper {
+  /* Force dark mode variables for all tiptap components */
+  --tt-bg-color: #0e0e11;
+  --tt-toolbar-bg-color: #0e0e11;
+  --tt-toolbar-border-color: rgba(0, 255, 170, 0.2);
+  --tt-card-bg-color: #1e1e24;
+  --tt-card-border-color: rgba(0, 255, 170, 0.2);
+  --tt-border-color: rgba(0, 255, 170, 0.2);
+  --tt-border-color-tint: rgba(0, 255, 170, 0.1);
+
+  /* Override gray colors for dark mode */
+  --tt-gray-light-50: #1e1e24;
+  --tt-gray-light-100: #2a2a32;
+  --tt-gray-light-200: #3a3a44;
+  --tt-gray-light-a-100: rgba(255, 255, 255, 0.05);
+  --tt-gray-light-a-200: rgba(255, 255, 255, 0.1);
+  --tt-gray-light-a-300: rgba(255, 255, 255, 0.15);
+  --tt-gray-light-a-400: rgba(255, 255, 255, 0.3);
+  --tt-gray-light-a-500: rgba(255, 255, 255, 0.5);
+  --tt-gray-light-a-600: rgba(255, 255, 255, 0.7);
+  --tt-gray-light-a-900: rgba(255, 255, 255, 0.95);
+
+  .tiptap-toolbar {
+    background-color: #0e0e11 !important;
+    border-color: rgba(0, 255, 170, 0.2) !important;
+  }
+
+  .tiptap-button {
+    --tt-button-default-bg-color: transparent;
+    --tt-button-hover-bg-color: rgba(0, 255, 170, 0.1);
+    --tt-button-active-bg-color: rgba(0, 255, 170, 0.15);
+    --tt-button-default-icon-color: #9ca3af;
+    --tt-button-hover-icon-color: #00ffaa;
+    --tt-button-active-icon-color: #00ffaa;
+    --tt-button-default-text-color: #9ca3af;
+    --tt-button-hover-text-color: #d4d4d4;
+    --tt-button-active-text-color: #00ffaa;
+  }
+
+  /* Dropdown menus */
+  .tiptap-dropdown-menu {
+    --tt-dropdown-menu-bg-color: #1e1e24;
+    --tt-dropdown-menu-border-color: rgba(0, 255, 170, 0.2);
+    --tt-dropdown-menu-text-color: #d4d4d4;
+    background-color: #1e1e24 !important;
+    border: 1px solid rgba(0, 255, 170, 0.2) !important;
+  }
+
+  /* Popovers */
+  .tiptap-popover {
+    background-color: #1e1e24 !important;
+    border: 1px solid rgba(0, 255, 170, 0.2) !important;
+  }
+
+  /* Cards */
+  .tiptap-card {
+    background-color: #1e1e24 !important;
+    border-color: rgba(0, 255, 170, 0.2) !important;
+  }
+
+  /* Inputs */
+  input, .tiptap-input {
+    background-color: #0e0e11 !important;
+    border-color: rgba(0, 255, 170, 0.2) !important;
+    color: #d4d4d4 !important;
+
+    &::placeholder {
+      color: #6b7280 !important;
+    }
+
+    &:focus {
+      border-color: #00ffaa !important;
+      outline: none !important;
+    }
+  }
+
+  /* Separators */
+  .tiptap-separator {
+    background-color: rgba(0, 255, 170, 0.2) !important;
+  }
+
+  .tiptap.ProseMirror {
+    background-color: #0e0e11;
+    color: #d4d4d4;
+
+    /* Headings in editor match rendered output */
+    h1 {
+      color: #00ffaa;
+      font-family: 'VT323', 'Courier New', monospace;
+    }
+
+    h2 {
+      color: #d4a574;
+      font-family: 'VT323', 'Courier New', monospace;
+    }
+
+    h3, h4 {
+      color: #9ca3af;
+      font-family: 'VT323', 'Courier New', monospace;
+    }
+
+    /* Links */
+    a {
+      color: #00ff99;
+    }
+
+    /* Code blocks */
+    pre {
+      background-color: #1e1e24;
+      border: 1px solid rgba(0, 255, 170, 0.2);
+      border-radius: 0.5rem;
+    }
+
+    code {
+      color: #e879f9;
+      background-color: rgba(232, 121, 249, 0.1);
+      padding: 0.125rem 0.25rem;
+      border-radius: 0.25rem;
+    }
+
+    pre code {
+      background-color: transparent;
+      padding: 0;
+      color: #d4d4d4;
+    }
+
+    /* Blockquotes */
+    blockquote {
+      border-left-color: #00ffaa;
+      color: #d4d4d4;
+    }
+
+    /* Lists */
+    ul li::marker {
+      color: #00ffaa;
+    }
+
+    ol li::marker {
+      color: #9ca3af;
+    }
+  }
+}
+
 ::-webkit-scrollbar {
   width: 0.25rem;
 }

@@ -28,11 +28,11 @@ export default function Post() {
   return (
     <main className="mx-auto max-w-3xl px-4 py-10 sm:py-14">
       <header className="mb-8">
-        <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
+        <h1 className="text-3xl font-bold tracking-tight sm:text-4xl text-[#00ffaa] font-mono">
           {post.title}
         </h1>
         {post.publishedAt ? (
-          <p className="mt-2 text-sm text-neutral-500 dark:text-neutral-400">
+          <p className="mt-2 text-sm text-[#9ca3af]">
             {new Date(post.publishedAt).toLocaleDateString(undefined, {
               year: "numeric",
               month: "long",
