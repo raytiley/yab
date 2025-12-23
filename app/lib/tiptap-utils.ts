@@ -7,11 +7,19 @@ import {
   TextSelection,
 } from "@tiptap/pm/state"
 import type { Editor, NodeWithPos } from "@tiptap/react"
-import { createClient } from '@supabase/supabase-js'
-const supabase = createClient(
-  import.meta.env.VITE_SUPABASE_URL!,
-  import.meta.env.VITE_SUPABASE_ANON_KEY!
-);
+import { createClient, SupabaseClient } from '@supabase/supabase-js'
+
+let _supabase: SupabaseClient | null = null;
+
+function getSupabaseClient(): SupabaseClient {
+  if (!_supabase) {
+    _supabase = createClient(
+      import.meta.env.VITE_SUPABASE_URL!,
+      import.meta.env.VITE_SUPABASE_ANON_KEY!
+    );
+  }
+  return _supabase;
+}
 
 const buildObjectPath = (file: File) =>
   `images/${crypto.randomUUID()}-${file.name}`
@@ -379,6 +387,7 @@ export const handleImageUpload = async (
   }
 
   const path = buildObjectPath(file)
+  const supabase = getSupabaseClient()
   const { error } = await supabase.storage
     .from(YAB_IMAGE_BUCKET)
     .upload(path, file, { contentType: file.type, upsert: false })
