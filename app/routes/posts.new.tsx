@@ -35,7 +35,7 @@ export async function action({ request }: ActionFunctionArgs) {
   let json = null;
   try {
     json = JSON.parse(postContent);
-  } catch (e) {
+  } catch {
     errors.content = "Content must be valid JSON";
     return data({ errors }, { status: 400 });
   }

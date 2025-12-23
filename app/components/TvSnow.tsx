@@ -86,7 +86,7 @@ export default function TVSnow({
       return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
     };
 
-    let rand = mulberry32(seedFromCrypto());
+    const rand = mulberry32(seedFromCrypto());
 
     // For FPS limiting
     let lastTime = 0;

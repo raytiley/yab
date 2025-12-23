@@ -14,7 +14,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 }
 
 export default function ProtectedPage() {
-  let data = useLoaderData<typeof loader>()
+  const data = useLoaderData<typeof loader>()
 
   return (
     <div className="flex items-center justify-center h-screen gap-2">

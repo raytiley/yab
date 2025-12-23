@@ -364,8 +364,8 @@ export function selectionWithinConvertibleTypes(
  */
 export const handleImageUpload = async (
   file: File,
-  onProgress?: (event: { progress: number }) => void,
-  abortSignal?: AbortSignal
+  _onProgress?: (event: { progress: number }) => void,
+  _abortSignal?: AbortSignal
 ): Promise<string> => {
   // Validate file
   if (!file) {
@@ -379,7 +379,7 @@ export const handleImageUpload = async (
   }
 
   const path = buildObjectPath(file)
-  const { data, error } = await supabase.storage
+  const { error } = await supabase.storage
     .from(YAB_IMAGE_BUCKET)
     .upload(path, file, { contentType: file.type, upsert: false })
 

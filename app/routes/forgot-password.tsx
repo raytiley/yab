@@ -45,7 +45,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
 export default function ForgotPassword() {
   const fetcher = useFetcher<typeof action>()
-  let [searchParams] = useSearchParams()
+  const [searchParams] = useSearchParams()
 
   const success = !!searchParams.has('success')
   const error = fetcher.data?.error
