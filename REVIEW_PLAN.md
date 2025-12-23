@@ -6,17 +6,19 @@
 - [x] **Fix TiptapRenderer** - Was incorrectly wrapping all content in a single `<p>` tag, breaking headings/lists/etc.
 - [x] **Apply retro prose theme** - Changed from `prose-neutral` to `prose-retro` to match GeoCities aesthetic
 - [x] **Add missing extensions to renderer** - Added `OrderedList` and `TextAlign`, removed unused `ImageUploadNode`
+- [x] **Set up GitHub Actions CI** - Prisma validate, typecheck, lint, build
+- [x] **Add ESLint** - TypeScript + React hooks plugins configured
+- [x] **Add authentication to `/posts/new`** - Only authenticated users can create posts
+- [x] **Add duplicate slug handling** - Check for existing posts with same slug
+- [x] **Fix SimpleEditor default content** - Now starts empty, accepts initialContent/initialTitle props
+- [x] **Fix MAX_FILE_SIZE comment** - Fixed comment to say 10MB (matching actual value)
 
-## Remaining Code Fixes
+## Not Changed (Intentionally)
 
-- [ ] **Add authentication to `/posts/new`** - Currently anyone can create posts
-- [ ] **Fix MAX_FILE_SIZE comment** - Comment says 5MB but value is 10MB
-- [ ] **Remove debug `console.log` statements** - Left in production code
-- [ ] **Remove `"use client"` directives** - Next.js-specific, not needed in React Router
-- [ ] **Fix SimpleEditor default content** - Starts with sample content instead of empty
-- [ ] **Add duplicate slug handling** - No check for duplicate slugs when creating posts
+- **`"use client"` directives** - Harmless in React Router (ignored), left as-is
+- **`console.log` in JSDoc** - These are documentation examples, not debug code
 
-## Infrastructure TODO
+## Future Improvements
 
-- [ ] **Set up GitHub Actions CI** - Build, typecheck, and test on PRs
-- [ ] **Add basic test suite** - At minimum, build verification
+- [ ] Add test suite (currently no tests)
+- [ ] Fix React hooks lint warnings (real issues in TipTap components)
