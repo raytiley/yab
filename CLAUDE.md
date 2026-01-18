@@ -259,4 +259,10 @@ supabase status      # Show all local Supabase URLs and keys
 
 ### Testing Auth Locally
 
-Supabase local dev includes Mailpit for email testing. When you sign up or reset passwords, emails appear at http://localhost:54324 instead of being sent.
+**Dev user credentials:**
+- Email: `dev@raytiley.com`
+- Password: `password123`
+
+This user is automatically seeded on `npm run db:reset`. Public sign-up is disabled since this is a personal blog.
+
+Supabase local dev includes Mailpit for email testing. Password reset emails appear at http://localhost:54324.
