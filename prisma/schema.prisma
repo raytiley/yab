@@ -26,3 +26,47 @@ model Post {
 
   @@index([publishedAt])
 }
+
+// Habit Tracking
+
+enum FrequencyType {
+  DAILY           // Every day
+  WEEKLY          // X times per week
+  MONTHLY         // X times per month
+  SPECIFIC_DAYS   // Specific days (Mon/Wed/Fri)
+}
+
+model Habit {
+  id            String        @id @default(cuid())
+  userId        String        // Supabase user ID
+  name          String        // "Practice Guitar"
+  description   String?
+  emoji         String        @default("⭐")
+  color         String        @default("#00ccff")
+
+  frequencyType FrequencyType @default(DAILY)
+  targetCount   Int           @default(1)
+  specificDays  Int[]         @default([]) // 0=Sun, 1=Mon...
+
+  isActive      Boolean       @default(true)
+  archivedAt    DateTime?
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  completions   HabitCompletion[]
+
+  @@index([userId, isActive])
+}
+
+model HabitCompletion {
+  id          String   @id @default(cuid())
+  habitId     String
+  userId      String
+  completedAt DateTime @default(now())
+  note        String?
+
+  habit       Habit    @relation(fields: [habitId], references: [id], onDelete: Cascade)
+
+  @@index([habitId, completedAt])
+  @@index([userId, completedAt])
+}

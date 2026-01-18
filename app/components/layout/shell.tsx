@@ -73,6 +73,14 @@ export default function Shell({ children }: { children?: React.ReactNode }) {
               </li>
               <li>
                 <Link
+                  to="/habits"
+                  className="hover:text-[#00ccff] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00ccff] rounded"
+                >
+                  Habits
+                </Link>
+              </li>
+              <li>
+                <Link
                   to="/about"
                   className="hover:text-[#00ccff] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00ccff] rounded"
                 >
@@ -107,6 +115,15 @@ export default function Shell({ children }: { children?: React.ReactNode }) {
                   className="hover:text-[#00ccff] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00ccff] rounded"
                 >
                   Posts
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/habits"
+                  onClick={() => setMenuOpen(false)}
+                  className="hover:text-[#00ccff] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00ccff] rounded"
+                >
+                  Habits
                 </Link>
               </li>
               <li>

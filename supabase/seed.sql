@@ -15,7 +15,10 @@ INSERT INTO auth.users (
   is_super_admin,
   role,
   aud,
-  confirmation_token
+  confirmation_token,
+  email_change,
+  email_change_token_new,
+  recovery_token
 ) VALUES (
   '00000000-0000-0000-0000-000000000001',
   '00000000-0000-0000-0000-000000000000',
@@ -30,6 +33,9 @@ INSERT INTO auth.users (
   false,
   'authenticated',
   'authenticated',
+  '',
+  '',
+  '',
   ''
 );
 
