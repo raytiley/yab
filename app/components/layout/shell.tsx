@@ -1,9 +1,18 @@
 import { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
-import { Link } from "react-router";
+import { Link, useRouteLoaderData } from "react-router";
+import type { User } from "@supabase/supabase-js";
 
 export default function Shell({ children }: { children?: React.ReactNode }) {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [isClient, setIsClient] = useState(false);
+  const rootData = useRouteLoaderData("root") as { user: User | null } | undefined;
+  const user = rootData?.user;
+
+  // Avoid hydration mismatch by only showing user-dependent UI after mount
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   // Close on Escape
   useEffect(() => {
@@ -71,6 +80,16 @@ export default function Shell({ children }: { children?: React.ReactNode }) {
                   Posts
                 </Link>
               </li>
+              {isClient && user && (
+                <li>
+                  <Link
+                    to="/habits"
+                    className="hover:text-[#00ccff] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00ccff] rounded"
+                  >
+                    Habits
+                  </Link>
+                </li>
+              )}
               <li>
                 <Link
                   to="/about"
@@ -109,6 +128,17 @@ export default function Shell({ children }: { children?: React.ReactNode }) {
                   Posts
                 </Link>
               </li>
+              {isClient && user && (
+                <li>
+                  <Link
+                    to="/habits"
+                    onClick={() => setMenuOpen(false)}
+                    className="hover:text-[#00ccff] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00ccff] rounded"
+                  >
+                    Habits
+                  </Link>
+                </li>
+              )}
               <li>
                 <Link
                   to="/about"
@@ -144,6 +174,17 @@ export default function Shell({ children }: { children?: React.ReactNode }) {
       {/* Footer */}
       <footer className="mt-12 border-t border-[#00ff99]/20 text-center p-4 text-sm text-[#00ff99]">
         <p>© 2025 raytiley.com. Built with 🍺 and ☕️</p>
+        <p className="mt-2 text-[#00ff99]/50">
+          {isClient && user ? (
+            <Link to="/logout" className="hover:text-[#00ccff] transition-colors">
+              Logout
+            </Link>
+          ) : (
+            <Link to="/login" className="hover:text-[#00ccff] transition-colors">
+              Admin
+            </Link>
+          )}
+        </p>
       </footer>
     </div>
   );

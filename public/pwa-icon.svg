@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- Background with dark retro styling -->
+  <rect width="512" height="512" fill="#0d0d0d"/>
+
+  <!-- Scanline effect overlay -->
+  <defs>
+    <pattern id="scanlines" patternUnits="userSpaceOnUse" width="4" height="4">
+      <line x1="0" y1="0" x2="4" y2="0" stroke="#000" stroke-width="1" opacity="0.3"/>
+    </pattern>
+
+    <!-- Glow filter for neon effect -->
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="8" result="blur"/>
+      <feColorMatrix in="blur" type="matrix" values="0 0 0 0 0  0 0 0 0 0.8  0 0 0 0 1  0 0 0 1 0"/>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Outer border glow -->
+  <rect x="24" y="24" width="464" height="464" rx="48" fill="none" stroke="#00ccff" stroke-width="4" filter="url(#glow)"/>
+
+  <!-- Inner frame -->
+  <rect x="40" y="40" width="432" height="432" rx="32" fill="#1a1a1a"/>
+
+  <!-- CRT monitor bezel -->
+  <rect x="56" y="56" width="400" height="400" rx="16" fill="#0d0d0d" stroke="#333" stroke-width="2"/>
+
+  <!-- Screen glow background -->
+  <rect x="72" y="72" width="368" height="328" rx="8" fill="#001a1a"/>
+
+  <!-- R letter with retro styling -->
+  <g transform="translate(140, 100)">
+    <!-- Main R shape with cyan glow -->
+    <text x="0" y="200" font-family="monospace, 'Courier New', Courier" font-size="240" font-weight="bold" fill="#00ccff" filter="url(#glow)">R</text>
+  </g>
+
+  <!-- Decorative dots (neon green) -->
+  <circle cx="100" cy="440" r="12" fill="#00ff99" filter="url(#glow)"/>
+  <circle cx="140" cy="440" r="8" fill="#00ccff" filter="url(#glow)"/>
+  <circle cx="172" cy="440" r="6" fill="#00ff99" opacity="0.7"/>
+
+  <!-- Power indicator -->
+  <circle cx="412" cy="440" r="10" fill="#00ff99" filter="url(#glow)"/>
+
+  <!-- Scanlines overlay -->
+  <rect x="72" y="72" width="368" height="328" rx="8" fill="url(#scanlines)" opacity="0.5"/>
+</svg>

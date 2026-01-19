@@ -26,3 +26,73 @@ model Post {
 
   @@index([publishedAt])
 }
+
+// Habit Tracking
+
+enum FrequencyType {
+  DAILY           // Every day
+  WEEKLY          // X times per week
+  MONTHLY         // X times per month
+  SPECIFIC_DAYS   // Specific days (Mon/Wed/Fri)
+}
+
+model Habit {
+  id            String        @id @default(cuid())
+  userId        String        // Supabase user ID
+  name          String        // "Practice Guitar"
+  description   String?
+  emoji         String        @default("⭐")
+  color         String        @default("#00ccff")
+
+  frequencyType FrequencyType @default(DAILY)
+  targetCount   Int           @default(1)
+  specificDays  Int[]         @default([]) // 0=Sun, 1=Mon...
+
+  isActive      Boolean       @default(true)
+  archivedAt    DateTime?
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  completions   HabitCompletion[]
+  reminder      HabitReminder?
+
+  @@index([userId, isActive])
+}
+
+model HabitCompletion {
+  id          String   @id @default(cuid())
+  habitId     String
+  userId      String
+  completedAt DateTime @default(now())
+  note        String?
+
+  habit       Habit    @relation(fields: [habitId], references: [id], onDelete: Cascade)
+
+  @@index([habitId, completedAt])
+  @@index([userId, completedAt])
+}
+
+// Push Notifications
+
+model PushSubscription {
+  id        String   @id @default(cuid())
+  userId    String
+  endpoint  String   @unique
+  p256dh    String   // Public key for encryption
+  auth      String   // Auth secret
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+}
+
+model HabitReminder {
+  id       String  @id @default(cuid())
+  habitId  String  @unique
+  userId   String
+  time     String  // "09:00" format (HH:mm)
+  enabled  Boolean @default(true)
+
+  habit    Habit   @relation(fields: [habitId], references: [id], onDelete: Cascade)
+
+  @@index([userId, enabled])
+}
