@@ -22,7 +22,6 @@ export async function loader({ request }: LoaderFunctionArgs) {
     // Get current hour in HH:00 format
     const now = new Date();
     const currentHour = now.getUTCHours().toString().padStart(2, "0");
-    const timePattern = `${currentHour}:%`; // Matches "09:00", "09:15", etc.
 
     // Find all enabled reminders for the current hour
     const reminders = await prisma.habitReminder.findMany({
