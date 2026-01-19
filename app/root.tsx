@@ -6,10 +6,19 @@ import {
   Scripts,
   ScrollRestoration,
 } from "react-router";
+import type { LoaderFunctionArgs } from "react-router";
 
 import type { Route } from "./+types/root";
 import "./app.css";
 import Shell from "./components/layout/shell";
+import { UpdatePrompt } from "./components/pwa/update-prompt";
+import { createClient } from "./lib/supabase/server";
+
+export async function loader({ request }: LoaderFunctionArgs) {
+  const { supabase } = createClient(request);
+  const { data: userData } = await supabase.auth.getUser();
+  return { user: userData?.user ?? null };
+}
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -22,6 +31,11 @@ export const links: Route.LinksFunction = () => [
     rel: "stylesheet",
     href: "https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap",
   },
+  // PWA
+  { rel: "manifest", href: "/manifest.webmanifest" },
+  { rel: "icon", href: "/favicon.ico", sizes: "48x48" },
+  { rel: "icon", href: "/pwa-icon.svg", sizes: "any", type: "image/svg+xml" },
+  { rel: "apple-touch-icon", href: "/apple-touch-icon-180x180.png" },
 ];
 
 export function Layout({ children }: { children: React.ReactNode }) {
@@ -30,6 +44,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        {/* PWA meta tags */}
+        <meta name="theme-color" content="#00ccff" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        <meta name="apple-mobile-web-app-title" content="RayOS" />
         <Meta />
         <Links />
       </head>
@@ -37,6 +56,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Shell>
           {children}
         </Shell>
+        <UpdatePrompt />
         <ScrollRestoration />
         <Scripts />
       </body>

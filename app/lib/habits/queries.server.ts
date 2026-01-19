@@ -188,3 +188,37 @@ export async function toggleHabitCompletion(
     return { completed: true, completion: { id: completion.id } };
   }
 }
+
+// Habit Reminders
+
+export async function getHabitReminder(habitId: string) {
+  return prisma.habitReminder.findUnique({
+    where: { habitId },
+  });
+}
+
+export async function upsertHabitReminder(
+  habitId: string,
+  userId: string,
+  data: { time: string; enabled: boolean }
+) {
+  return prisma.habitReminder.upsert({
+    where: { habitId },
+    update: {
+      time: data.time,
+      enabled: data.enabled,
+    },
+    create: {
+      habitId,
+      userId,
+      time: data.time,
+      enabled: data.enabled,
+    },
+  });
+}
+
+export async function deleteHabitReminder(habitId: string) {
+  return prisma.habitReminder.deleteMany({
+    where: { habitId },
+  });
+}

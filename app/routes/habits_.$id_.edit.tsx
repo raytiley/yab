@@ -1,8 +1,9 @@
 import { data, redirect, useFetcher, useLoaderData, useNavigate } from "react-router";
 import type { ActionFunctionArgs, LoaderFunctionArgs } from "react-router";
 import { createClient } from "~/lib/supabase/server";
-import { getHabitById, updateHabit } from "~/lib/habits/queries.server";
+import { getHabitById, updateHabit, getHabitReminder, upsertHabitReminder, deleteHabitReminder } from "~/lib/habits/queries.server";
 import { FrequencySelector } from "~/components/habits/FrequencySelector";
+import { ReminderSettings } from "~/components/habits/reminder-settings";
 import { useState } from "react";
 import type { FrequencyType } from "@prisma/client";
 
@@ -24,7 +25,9 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
     return redirect("/habits");
   }
 
-  return { habit, user: userData.user };
+  const reminder = await getHabitReminder(habitId);
+
+  return { habit, reminder, user: userData.user };
 }
 
 export async function action({ request, params }: ActionFunctionArgs) {
@@ -74,6 +77,20 @@ export async function action({ request, params }: ActionFunctionArgs) {
     specificDays,
   });
 
+  // Handle reminder settings
+  const reminderEnabled = formData.get("reminderEnabled") === "true";
+  const reminderTime = formData.get("reminderTime") as string;
+
+  if (reminderEnabled && reminderTime) {
+    await upsertHabitReminder(habitId, userData.user.id, {
+      time: reminderTime,
+      enabled: true,
+    });
+  } else {
+    // Delete reminder if disabled
+    await deleteHabitReminder(habitId);
+  }
+
   return redirect(`/habits/${habitId}`);
 }
 
@@ -81,7 +98,7 @@ const EMOJI_OPTIONS = ["⭐", "🎸", "📖", "✍️", "💪", "🧘", "🏃", 
 const COLOR_OPTIONS = ["#00ccff", "#00ff99", "#ff6b6b", "#ffd93d", "#6bcb77", "#4d96ff", "#9b59b6", "#e74c3c"];
 
 export default function EditHabitRoute() {
-  const { habit } = useLoaderData<typeof loader>();
+  const { habit, reminder } = useLoaderData<typeof loader>();
   const navigate = useNavigate();
   const fetcher = useFetcher<{ errors?: { name?: string; frequencyType?: string } }>();
   const errors = fetcher.data?.errors;
@@ -92,6 +109,8 @@ export default function EditHabitRoute() {
   const [frequencyType, setFrequencyType] = useState<FrequencyType>(habit.frequencyType);
   const [targetCount, setTargetCount] = useState(habit.targetCount);
   const [specificDays, setSpecificDays] = useState<number[]>(habit.specificDays);
+  const [reminderEnabled, setReminderEnabled] = useState(reminder?.enabled ?? false);
+  const [reminderTime, setReminderTime] = useState(reminder?.time ?? "09:00");
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -101,6 +120,8 @@ export default function EditHabitRoute() {
     formData.set("frequencyType", frequencyType);
     formData.set("targetCount", String(targetCount));
     formData.set("specificDays", specificDays.join(","));
+    formData.set("reminderEnabled", String(reminderEnabled));
+    formData.set("reminderTime", reminderTime);
     fetcher.submit(formData, { method: "post" });
   };
 
@@ -208,6 +229,14 @@ export default function EditHabitRoute() {
           onFrequencyTypeChange={setFrequencyType}
           onTargetCountChange={setTargetCount}
           onSpecificDaysChange={setSpecificDays}
+        />
+
+        {/* Reminder settings */}
+        <ReminderSettings
+          enabled={reminderEnabled}
+          time={reminderTime}
+          onEnabledChange={setReminderEnabled}
+          onTimeChange={setReminderTime}
         />
 
         {/* Actions */}
